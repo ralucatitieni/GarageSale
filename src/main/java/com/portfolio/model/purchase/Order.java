@@ -14,18 +14,18 @@ public class Order {
 
     private String id;
     private List<Product> itemsInCart;
-    private boolean payed;
+    private boolean paid;
     private CustomerDetails customerDetails;
     private Card card;
 
     public Order() {
         this.itemsInCart = new ArrayList<>();
         this.id = UUID.randomUUID().toString().substring(0, 8);
-        this.payed = false;
+        this.paid = false;
     }
 
-    public boolean isPayed() {
-        return payed;
+    public boolean isPaid() {
+        return paid;
     }
 
     @Override
@@ -33,7 +33,7 @@ public class Order {
         return "ORDER " + '\n' +
                 "ID='" + id + '\'' +
                 ", Purchased items: " + itemsInCart +
-                ", PAYED" + payed + '\n' +
+                ", PAYED" + paid + '\n' +
                 ", Customer Details: " + customerDetails +
                 ", " + card;
     }

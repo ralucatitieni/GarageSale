@@ -1,5 +1,6 @@
 package com.portfolio.repository;
 
+
 import com.portfolio.model.product.Product;
 import com.portfolio.model.product.Stock;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,17 @@ public class StockRepository {
 
     public List<Stock> getStockList() {
         return stockList;
+    }
+
+    public void addStock(String id) {
+        Stock newStock = new Stock(id);
+        stockList.add(newStock);
+    }
+
+    public Stock getStockById(String id) {
+        return stockList.stream().
+                filter(p -> p.getProductId().equalsIgnoreCase(id)).
+                findFirst().orElse(null);
     }
 
 }

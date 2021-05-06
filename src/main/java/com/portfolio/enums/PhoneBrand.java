@@ -5,5 +5,13 @@ public enum PhoneBrand {
     APPLE,
     XIAOMI,
     ONE_PLUS,
-    HUAWEI
+    HUAWEI;
+
+    public static PhoneBrand getPhoneBrand(String brand) {
+        try {
+            return PhoneBrand.valueOf(brand.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+    }
 }

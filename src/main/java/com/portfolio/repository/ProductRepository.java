@@ -10,15 +10,16 @@ import com.portfolio.model.purchase.Price;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Component
 public class ProductRepository {
 
-    private List<Product> productList = new ArrayList<>();
+    private Set<Product> productList = new HashSet<>();
+
 
     @PostConstruct
     private void setProductList() {
@@ -102,63 +103,22 @@ public class ProductRepository {
 
     }
 
-    public List<Product> getAllProducts() {
+    public Set<Product> getAllProducts() {
         return productList;
-    }
-
-    public void addLaptop(Price price, String issue, LaptopOperatingSystem operatingSystem,
-                          MemorySize memorySize, int diagonalDisplay, String laptopBrand, String laptopModel) {
-        Product newProduct = Laptop.builder().price(price).
-                issue(issue).
-                productCategory(ProductCategory.LAPTOP).
-                operatingSystem(operatingSystem).
-                memorySize(memorySize).
-                diagonalDisplay(diagonalDisplay).
-                laptopBrand(laptopBrand).
-                laptopModel(laptopModel).
-                build();
-        productList.add(newProduct);
-    }
-
-    public void addPhone(Price price, String issue, PhoneOperatingSystem operatingSystem,
-                         MemorySize memorySize, PhoneBrand phoneBrand, String phoneModel, boolean dualSim) {
-        Product newProduct = Phone.builder().price(price).
-                issue(issue).
-                productCategory(ProductCategory.PHONE).
-                operatingSystem(operatingSystem).
-                memorySize(memorySize).
-                phoneBrand(phoneBrand).
-                phoneModel(phoneModel).
-                dualSim(dualSim).
-                build();
-        productList.add(newProduct);
-
-    }
-
-    public void addKeyboard(Price price, String issue, String keyboardBrand, String keyboardType) {
-        Product newProduct = Keyboard.builder().price(price).
-                issue(issue).
-                productCategory(ProductCategory.KEYBOARD).
-                keyboardBrand(keyboardBrand).
-                keyboardType(keyboardType).
-                build();
-        productList.add(newProduct);
-    }
-
-    public void addHeadphone(Price price, String issue, String headphoneBrand, String headphoneType) {
-        Product newProduct = Headphone.builder().price(price).
-                issue(issue).
-                productCategory(ProductCategory.HEADPHONE).
-                headphoneBrand(headphoneBrand).
-                headphoneType(headphoneType).
-                build();
-        productList.add(newProduct);
     }
 
     public Product getProductById(String id) {
         return getAllProducts().stream()
                 .filter(p -> p.getId().equalsIgnoreCase(id))
                 .findFirst().orElse(null);
+    }
+
+    public String getProductId(Product product) {
+        if (productList.contains(product)) {
+            return product.getId();
+        } else {
+            return null;
+        }
     }
 }
 

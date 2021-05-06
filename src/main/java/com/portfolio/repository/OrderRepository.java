@@ -8,7 +8,6 @@ import java.util.List;
 
 @Component
 public class OrderRepository {
-
     private List<Order> orderList = new ArrayList<>();
 
     public List<Order> getAllOrders() {
@@ -18,4 +17,11 @@ public class OrderRepository {
     public void registerOrder(Order order) {
         orderList.add(order);
     }
+
+    public Order getOrderById(String orderId) {
+        return getAllOrders().stream()
+                .filter(o -> o.getId().equalsIgnoreCase(orderId))
+                .findFirst().orElse(null);
+    }
 }
+

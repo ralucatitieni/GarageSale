@@ -1,6 +1,7 @@
-package com.portfolio.service;
+package com.portfolio.validator;
 
 import com.portfolio.exception.InvalidCardException;
+import com.portfolio.model.purchase.Card;
 import org.springframework.stereotype.Component;
 
 import java.time.YearMonth;
@@ -10,37 +11,31 @@ import java.util.regex.Pattern;
 @Component
 public class CardValidator {
 
-    private static final String cardNumberPatter = "(?:\\d{16})";
-    private static final String cardCVVPatter = "(?:\\d{3})";
+    private static final String cardNumberPattern = "^(?:\\d{16})$";
+    private static final String cardCVVPatter = "^(?:\\d{3})$";
 
-    public void validateCard(String cardNumber, String cardCvv, YearMonth expireDate) throws InvalidCardException {
+    public void validateCard(Card card) throws InvalidCardException {
 
-        Pattern patternCardNumber = Pattern.compile(cardNumberPatter);
+        Pattern patternCardNumber = Pattern.compile(cardNumberPattern);
         Pattern patternCVV = Pattern.compile(cardCVVPatter);
-        Matcher matcherCardNumber = patternCardNumber.matcher(cardNumber);
-        Matcher matcherCVV = patternCVV.matcher(cardCvv);
+        Matcher matcherCardNumber = patternCardNumber.matcher(card.getCardNumber());
+        Matcher matcherCVV = patternCVV.matcher(card.getCardCvv());
 
         if (!matcherCardNumber.matches()) {
-            throw new InvalidCardException("Card number must contains only digits");
-        }
-        if (cardNumber.length() != 16) {
             throw new InvalidCardException("Card number must contain 16 digits");
         }
-        if (!isCardNumberValid(cardNumber)) {
+        if (!isCardNumberValid(card.getCardNumber())) {
             throw new InvalidCardException("Card number is not ok");
         }
-        if (cardCvv.length() != 3) {
-            throw new InvalidCardException("CVV not valid");
-        }
         if (!matcherCVV.matches()) {
-            throw new InvalidCardException("CVV must contain only digits");
+            throw new InvalidCardException("CVV must contain 3 digits");
         }
-        if (expireDate.isBefore(YearMonth.now())) {
+        if (card.getExpire().isBefore(YearMonth.now())) {
             throw new InvalidCardException("Card has expired");
         }
     }
 
-    public static boolean isCardNumberValid(String cardNumber) {
+    private boolean isCardNumberValid(String cardNumber) {
         long number = Long.parseLong(cardNumber);
         int digits = 0;
         long copyOfNumber = number;

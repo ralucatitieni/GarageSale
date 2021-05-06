@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Getter
 @SuperBuilder
-public class Product {
+public abstract class Product {
 
     private final String id = UUID.randomUUID().toString().substring(0, 8);
     private ProductCategory productCategory;
