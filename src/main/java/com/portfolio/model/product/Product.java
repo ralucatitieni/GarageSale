@@ -3,21 +3,17 @@ package com.portfolio.model.product;
 import com.portfolio.enums.ProductCategory;
 import com.portfolio.model.purchase.Price;
 import lombok.Getter;
+import lombok.experimental.SuperBuilder;
 
 import java.util.UUID;
 
 @Getter
-public abstract class Product {
+@SuperBuilder
+public class Product {
 
-    private final String id;
-    private final ProductCategory productCategory;
-    private final Price price;
-    private final String issue;
+    private final String id = UUID.randomUUID().toString().substring(0, 8);
+    private ProductCategory productCategory;
+    private Price price;
+    private String issue;
 
-    public Product(Price price, String issue, ProductCategory productCategory) {
-        this.price = price;
-        this.issue = issue;
-        this.productCategory = productCategory;
-        this.id = UUID.randomUUID().toString().substring(0, 8);
-    }
 }

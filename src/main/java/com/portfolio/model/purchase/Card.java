@@ -1,20 +1,23 @@
 package com.portfolio.model.purchase;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.YearMonth;
 
 @Getter
+@Setter
+@AllArgsConstructor
 public class Card implements Serializable {
 
-    private final String cardNumber;
-    private final String cardCvv;
-    private final YearMonth expire;
+    private String cardNumber;
+    private String cardCvv;
+    private YearMonth expire;
 
-    public Card(String cardNumber, String cardCvv, YearMonth expire) {
-        this.cardNumber = cardNumber;
-        this.cardCvv = cardCvv;
-        this.expire = expire;
+    @Override
+    public String toString() {
+        return "CARD: XXXX " + cardNumber.substring(12);
     }
 }

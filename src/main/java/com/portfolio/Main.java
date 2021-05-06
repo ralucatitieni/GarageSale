@@ -1,19 +1,18 @@
 package com.portfolio;
 
-import com.portfolio.model.product.Product;
-import com.portfolio.repository.ProductRepository;
 import com.portfolio.shop.Shop;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 
-import java.util.List;
-
+@SpringBootApplication
 public class Main {
 
     public static void main(String[] args) {
 
-        List<Product> productList = ProductRepository.getAllProducts();
-        Shop shop = new Shop(productList);
-
-        shop.showMainMenu();
+        ApplicationContext applicationContext = SpringApplication.run(Main.class, args);
+        Shop shop = applicationContext.getBean("shop", Shop.class);
+        shop.start();
 
     }
 }

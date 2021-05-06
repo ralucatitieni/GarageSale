@@ -1,7 +1,9 @@
 package com.portfolio.service;
 
 import com.portfolio.exception.InvalidEmailException;
+import org.springframework.stereotype.Component;
 
+@Component
 public class EmailValidator {
 
     public static void validateEmail(String email) throws InvalidEmailException {

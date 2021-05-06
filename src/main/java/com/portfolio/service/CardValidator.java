@@ -1,40 +1,41 @@
 package com.portfolio.service;
 
 import com.portfolio.exception.InvalidCardException;
-import com.portfolio.model.purchase.Card;
+import org.springframework.stereotype.Component;
 
 import java.time.YearMonth;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Component
 public class CardValidator {
 
     private static final String cardNumberPatter = "(?:\\d{16})";
     private static final String cardCVVPatter = "(?:\\d{3})";
 
-    public static void validateCard(Card card) throws InvalidCardException {
+    public void validateCard(String cardNumber, String cardCvv, YearMonth expireDate) throws InvalidCardException {
 
         Pattern patternCardNumber = Pattern.compile(cardNumberPatter);
         Pattern patternCVV = Pattern.compile(cardCVVPatter);
-        Matcher matcherCardNumber = patternCardNumber.matcher(card.getCardNumber());
-        Matcher matcherCVV = patternCVV.matcher(card.getCardCvv());
+        Matcher matcherCardNumber = patternCardNumber.matcher(cardNumber);
+        Matcher matcherCVV = patternCVV.matcher(cardCvv);
 
         if (!matcherCardNumber.matches()) {
             throw new InvalidCardException("Card number must contains only digits");
         }
-        if (card.getCardNumber().length() != 16) {
+        if (cardNumber.length() != 16) {
             throw new InvalidCardException("Card number must contain 16 digits");
         }
-        if (!isCardNumberValid(card.getCardNumber())) {
+        if (!isCardNumberValid(cardNumber)) {
             throw new InvalidCardException("Card number is not ok");
         }
-        if (card.getCardCvv().length() != 3) {
+        if (cardCvv.length() != 3) {
             throw new InvalidCardException("CVV not valid");
         }
         if (!matcherCVV.matches()) {
             throw new InvalidCardException("CVV must contain only digits");
         }
-        if (card.getExpire().isBefore(YearMonth.now())) {
+        if (expireDate.isBefore(YearMonth.now())) {
             throw new InvalidCardException("Card has expired");
         }
     }
@@ -76,5 +77,4 @@ public class CardValidator {
 
         return totalSum % 10 == 0;
     }
-
 }

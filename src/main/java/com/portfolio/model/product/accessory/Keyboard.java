@@ -1,30 +1,39 @@
 package com.portfolio.model.product.accessory;
 
-import com.portfolio.enums.ProductCategory;
 import com.portfolio.model.product.Product;
-import com.portfolio.model.purchase.Price;
 import lombok.Getter;
+import lombok.experimental.SuperBuilder;
+
+import java.util.Objects;
 
 @Getter
+@SuperBuilder
 public class Keyboard extends Product {
 
-    private final String keyboardBrand;
-    private final String keyboardType;
-
-    public Keyboard(Price price, String issue, ProductCategory productCategory, String keyboardBrand, String keyboardType) {
-        super(price, issue, productCategory);
-        this.keyboardBrand = keyboardBrand;
-        this.keyboardType = keyboardType;
-    }
+    private String keyboardBrand;
+    private String keyboardType;
 
     @Override
     public String toString() {
         return "KEYBOARD " + '\n' +
                 " Brand: " + keyboardBrand +
                 ", Keyboard Type: " + keyboardType +
-                ", Price: " + getPrice().getAmount() + "RON" +
+                ", Price: " + getPrice().getAmount() + " " + getPrice().getCurrency() +
                 ", Issue: " + getIssue() + '\n' +
-                " Product ID " + getId();
+                " Product ID: " + getId();
     }
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Keyboard keyboard = (Keyboard) o;
+        return Objects.equals(keyboardBrand, keyboard.keyboardBrand) && Objects.equals(keyboardType, keyboard.keyboardType);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(keyboardBrand, keyboardType);
+    }
 }

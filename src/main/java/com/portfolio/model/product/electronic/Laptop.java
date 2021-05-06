@@ -2,42 +2,48 @@ package com.portfolio.model.product.electronic;
 
 import com.portfolio.enums.LaptopOperatingSystem;
 import com.portfolio.enums.MemorySize;
-import com.portfolio.enums.ProductCategory;
 import com.portfolio.model.product.Product;
-import com.portfolio.model.purchase.Price;
 import lombok.Getter;
+import lombok.experimental.SuperBuilder;
+
+import java.util.Objects;
 
 @Getter
+@SuperBuilder
 public class Laptop extends Product {
 
-    private static final double CURRENCY_CONVERTER_EUR = 5;
-    private static final double CURRENCY_CONVERTER_USD = 4.5;
-    private final LaptopOperatingSystem operatingSystem;
-    private final MemorySize memorySize;
-    private final int diagonalDisplay;
-    private final String laptopBrand;
-    private final String laptopModel;
-
-    public Laptop(Price price, String issue, ProductCategory productCategory, LaptopOperatingSystem operatingSystem, MemorySize memorySize,
-                  int diagonalDisplay, String laptopBrand, String laptopModel) {
-        super(price, issue, productCategory);
-        this.operatingSystem = operatingSystem;
-        this.memorySize = memorySize;
-        this.diagonalDisplay = diagonalDisplay;
-        this.laptopBrand = laptopBrand;
-        this.laptopModel = laptopModel;
-    }
+    private static double CURRENCY_CONVERTER_EUR = 5;
+    private static double CURRENCY_CONVERTER_USD = 4.5;
+    private LaptopOperatingSystem operatingSystem;
+    private MemorySize memorySize;
+    private int diagonalDisplay;
+    private String laptopBrand;
+    private String laptopModel;
 
     @Override
     public String toString() {
         return "LAPTOP " + '\n' +
                 " Brand: " + laptopBrand +
-                ", Model: " + laptopModel + '\'' +
+                ", Model: " + laptopModel +
                 ", Operating System: " + operatingSystem +
                 ", Memory Size: " + memorySize +
                 ", Diagonal Display: " + diagonalDisplay +
-                ", Price: " + getPrice().getAmount() + "RON" +
+                ", Price: " + getPrice().getAmount() + " " + getPrice().getCurrency() +
                 ", Issue: " + getIssue() + '\n' +
-                " Product ID " + getId();
+                " Product ID: " + getId();
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Laptop laptop = (Laptop) o;
+        return diagonalDisplay == laptop.diagonalDisplay && operatingSystem == laptop.operatingSystem && memorySize == laptop.memorySize && Objects.equals(laptopBrand, laptop.laptopBrand) && Objects.equals(laptopModel, laptop.laptopModel);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(operatingSystem, memorySize, diagonalDisplay, laptopBrand, laptopModel);
     }
 }
