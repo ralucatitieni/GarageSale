@@ -1,0 +1,11 @@
+{
+    "customerDetailsRequest":{
+"firstName":"Paul",
+"lastName":"Artreides",
+"email":"paul.artreides@letsspisethingsup.com"
+    },
+    "productIds":[
+        "f9b45d94"
+    ]
+}
+
