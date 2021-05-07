@@ -1,27 +1,11 @@
 package com.portfolio.repository;
 
-import com.portfolio.model.purchase.Order;
-import org.springframework.stereotype.Component;
+import com.portfolio.entity.order.Order;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.List;
+@Repository
+public interface OrderRepository extends JpaRepository<Order, Integer> {
 
-@Component
-public class OrderRepository {
-    private List<Order> orderList = new ArrayList<>();
-
-    public List<Order> getAllOrders() {
-        return orderList;
-    }
-
-    public void registerOrder(Order order) {
-        orderList.add(order);
-    }
-
-    public Order getOrderById(String orderId) {
-        return getAllOrders().stream()
-                .filter(o -> o.getId().equalsIgnoreCase(orderId))
-                .findFirst().orElse(null);
-    }
 }
 

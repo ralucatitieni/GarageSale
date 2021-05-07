@@ -1,22 +1,19 @@
 package com.portfolio.model.response.order;
 
-
-import com.portfolio.enums.Currency;
-import com.portfolio.model.product.Product;
-import com.portfolio.model.purchase.Order;
 import com.portfolio.model.response.product.ProductResponse;
 import com.portfolio.model.response.product.ProductResponseFactory;
+import com.portfolio.entity.order.Order;
+import com.portfolio.entity.product.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Component
 public class OrderResponseFactory {
 
-    private static final double CURRENCY_CONVERTER_EUR = 5;
-    private static final double CURRENCY_CONVERTER_USD = 4.5;
+
     private ProductResponseFactory productResponseFactory;
 
 
@@ -28,32 +25,20 @@ public class OrderResponseFactory {
     public OrderResponse createOrderResponse(Order order) {
         OrderResponse orderResponse = new OrderResponse();
         orderResponse.setOrderId(order.getId());
-        List<ProductResponse> productResponseList = createProductResponse(order.getItemsInCart());
+        Set<ProductResponse> productResponseList = createProductResponse(order.getProducts());
         orderResponse.setProductResponses(productResponseList);
-        double amountTopPay = getTotalAmountInRON(order.getItemsInCart());
+        double amountTopPay = order.getTotal();
         orderResponse.setTotalAmount(amountTopPay);
         return orderResponse;
     }
 
-    private double getTotalAmountInRON(List<Product> productList) {
-        double amountInRON = 0;
-        for (Product product : productList) {
-            if (product.getPrice().getCurrency().equals(Currency.RON)) {
-                amountInRON += (product.getPrice().getAmount());
-            } else if (product.getPrice().getCurrency().equals(Currency.EUR)) {
-                amountInRON += (product.getPrice().getAmount() * CURRENCY_CONVERTER_EUR);
-            } else if (product.getPrice().getCurrency().equals(Currency.USD)) {
-                amountInRON += (product.getPrice().getAmount() * CURRENCY_CONVERTER_USD);
-            }
-        }
-        return amountInRON;
-    }
 
-    private List<ProductResponse> createProductResponse(List<Product> productList) {
-        List<ProductResponse> productResponseList = new ArrayList<>();
+    private Set<ProductResponse> createProductResponse(Set<Product> productList) {
+        Set<ProductResponse> productResponseList = new HashSet<>();
         ProductResponse productResponse;
         for (Product product : productList) {
-            productResponse = productResponseFactory.createProductResponse(product, 1);
+            productResponse = productResponseFactory.createProductResponse(product);
+            productResponse.setStock(1);
             productResponseList.add(productResponse);
         }
         return productResponseList;

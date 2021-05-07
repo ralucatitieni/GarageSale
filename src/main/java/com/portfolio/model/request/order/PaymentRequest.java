@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @AllArgsConstructor
-public class CardDetailsRequest {
+public class PaymentRequest {
 
     @NotNull
     private String cardNumber;

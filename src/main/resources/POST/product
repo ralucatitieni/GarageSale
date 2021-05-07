@@ -2,7 +2,7 @@
     "category": "LAPTOP",
     "currency": "USD",
     "amount": 600.0,
-    "issue": "8",
+    "issues": ["something", "bla bla"],
     "stock": 3,
     "laptopRequest": {
         "brand": "dvdvv",
@@ -18,7 +18,7 @@
     "category": "PHONE",
     "currency": "USD",
     "amount": 600.0,
-    "issue": "8",
+     "issues": ["something", "bla bla"],
     "stock": 3,
     "phoneRequest": {
        "memorySize": 8,
@@ -34,7 +34,7 @@
     "category": "HEADPHONE",
     "currency": "USD",
     "amount": 600.0,
-    "issue": "8",
+     "issues": ["something", "bla bla"],
     "stock": 3,
     "headphoneRequest": {
         "brand": "RALUCAAAA",
@@ -47,7 +47,7 @@
     "category": "KEYBOARD",
     "currency": "USD",
     "amount": 600.0,
-    "issue": "8",
+     "issues": ["something", "bla bla"],
     "stock": 3,
     "keyboardRequest": {
         "brand": "RALUCAAAA",

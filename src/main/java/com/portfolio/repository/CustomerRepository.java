@@ -1,13 +1,13 @@
 package com.portfolio.repository;
 
-import com.portfolio.entity.product.Stock;
+import com.portfolio.entity.order.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface StockRepository extends JpaRepository<Stock, Integer> {
+public interface CustomerRepository extends JpaRepository<Customer, Integer> {
 
-    Optional<Stock> findByProductId(int id);
+    Optional<Customer> findByEmail(String email);
 }

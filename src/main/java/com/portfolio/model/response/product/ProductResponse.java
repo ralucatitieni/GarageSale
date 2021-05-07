@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.Map;
 
 @Getter
@@ -12,10 +13,10 @@ import java.util.Map;
 @Builder
 public class ProductResponse {
 
-    public String productId;
-    public String productCategory;
+    public int productId;
+    public String category;
     public Price price;
-    public String issue;
+    public List<String> issues;
     public Map<String, String> characteristics;
     public int stock;
 

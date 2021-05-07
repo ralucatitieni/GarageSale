@@ -25,7 +25,7 @@ public class CardValidator {
             throw new InvalidCardException("Card number must contain 16 digits");
         }
         if (!isCardNumberValid(card.getCardNumber())) {
-            throw new InvalidCardException("Card number is not ok");
+            throw new InvalidCardException("Card number is not valid");
         }
         if (!matcherCVV.matches()) {
             throw new InvalidCardException("CVV must contain 3 digits");

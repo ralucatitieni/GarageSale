@@ -13,6 +13,7 @@ public class OrderRequest {
     @NotNull
     private CustomerDetailsRequest customerDetailsRequest;
     @NotNull
-    private Set<String> productIds;
+    private Set<Integer> productIds;
+
 
 }

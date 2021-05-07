@@ -1,64 +1,70 @@
 package com.portfolio.model.request.order;
 
-import com.portfolio.model.product.Product;
-import com.portfolio.model.product.Stock;
-import com.portfolio.model.purchase.CustomerDetails;
-import com.portfolio.model.purchase.Order;
-import com.portfolio.repository.OrderRepository;
+import com.portfolio.entity.order.Customer;
+import com.portfolio.entity.order.Order;
+import com.portfolio.entity.product.Product;
+import com.portfolio.enums.Currency;
+import com.portfolio.repository.CustomerRepository;
 import com.portfolio.repository.ProductRepository;
 import com.portfolio.repository.StockRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 @Component
 public class OrderMapper {
 
+    private static final double CURRENCY_CONVERTER_EUR = 5;
+    private static final double CURRENCY_CONVERTER_USD = 4.5;
     private StockRepository stockRepository;
     private ProductRepository productRepository;
-    private OrderRepository orderRepository;
+    private CustomerRepository customerRepository;
 
     @Autowired
     public OrderMapper(StockRepository stockRepository, ProductRepository productRepository,
-                       OrderRepository orderRepository) {
+                       CustomerRepository customerRepository) {
         this.stockRepository = stockRepository;
         this.productRepository = productRepository;
-        this.orderRepository = orderRepository;
+        this.customerRepository = customerRepository;
     }
 
     public Order createOrder(OrderRequest orderRequest) {
         Order order = new Order();
-        CustomerDetails customerDetails = createCustomerDetails(orderRequest.getCustomerDetailsRequest());
-        order.setCustomerDetails(customerDetails);
-        List<Product> productsInCart = createProductListInCart(orderRequest.getProductIds());
-        order.setItemsInCart(productsInCart);
-        orderRepository.getAllOrders().add(order);
+        Customer customer = createCustomer(orderRequest.getCustomerDetailsRequest());
+        order.setCustomer(customer);
+        Set<Product> productsInCart = createProductListInCart(orderRequest.getProductIds());
+        order.setProducts(productsInCart);
+        order.setTotal(getTotalAmountInRON(productsInCart));
         return order;
     }
 
-    public void updateStock(Set<String> ids) {
-        for (String id : ids) {
-            Stock stock = stockRepository.getStockById(id);
-            stock.setNumberOfItems(stock.getNumberOfItems() - 1);
-        }
-    }
 
-    private List<Product> createProductListInCart(Set<String> ids) {
-        List<Product> itemsInCart = new ArrayList<>();
-        for (String id : ids) {
-            Product product = productRepository.getProductById(id);
-            itemsInCart.add(product);
-        }
+    private Set<Product> createProductListInCart(Set<Integer> ids) {
+        Set<Product> itemsInCart = new HashSet<>();
+        itemsInCart.addAll(productRepository.findAllById(ids));
         return itemsInCart;
     }
 
-    private CustomerDetails createCustomerDetails(CustomerDetailsRequest customerDetailsRequest) {
-        CustomerDetails customerDetails = new CustomerDetails(customerDetailsRequest.getFirstName(),
-                customerDetailsRequest.getLastName(),
-                customerDetailsRequest.getEmail());
-        return customerDetails;
+    private Customer createCustomer(CustomerDetailsRequest customerDetailsRequest) {
+        Customer customer = customerRepository.findByEmail(customerDetailsRequest.getEmail())
+                .orElse(new Customer(customerDetailsRequest.getFirstName().trim(), customerDetailsRequest.getLastName().trim(), customerDetailsRequest.getEmail().trim()));
+
+        return customer;
+    }
+
+    private double getTotalAmountInRON(Set<Product> productList) {
+        double amountInRON = 0;
+        for (Product product : productList) {
+            if (product.getCurrency().equals(String.valueOf(Currency.RON))) {
+                amountInRON += (product.getAmount());
+            } else if (product.getCurrency().equals(String.valueOf(Currency.EUR))) {
+                amountInRON += (product.getAmount() * CURRENCY_CONVERTER_EUR);
+            } else if (product.getCurrency().equals(String.valueOf(Currency.USD))) {
+                amountInRON += (product.getAmount() * CURRENCY_CONVERTER_USD);
+            }
+        }
+        return amountInRON;
     }
 }

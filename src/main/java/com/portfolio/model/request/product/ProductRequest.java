@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
+
 
 @Getter
 @Setter
@@ -16,7 +18,7 @@ public class ProductRequest {
     @NotNull(message = "Amount is mandatory")
     private Double amount;
     @NotNull(message = "Issue is mandatory")
-    private String issue;
+    private List<String> issues;
     @NotNull
     private Integer stock;
 

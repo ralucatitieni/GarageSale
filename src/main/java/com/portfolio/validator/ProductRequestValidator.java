@@ -3,10 +3,10 @@ package com.portfolio.validator;
 import com.portfolio.enums.*;
 import com.portfolio.exception.InvalidProductRequestException;
 import com.portfolio.exception.ItemNotFoundException;
-import com.portfolio.model.product.Product;
 import com.portfolio.model.request.product.ProductRequest;
 import com.portfolio.repository.ProductRepository;
 import org.springframework.stereotype.Component;
+
 
 @Component
 public class ProductRequestValidator {
@@ -56,10 +56,9 @@ public class ProductRequestValidator {
         }
     }
 
-    public void validateProductByIdRequest(String id) throws ItemNotFoundException {
-        Product product = productRepository.getProductById(id);
-        if (product == null) {
-            throw new ItemNotFoundException("Product with id: " + id + " not found");
+    public void validateProductByIdRequest(int id) throws ItemNotFoundException {
+        if (productRepository.findById(id).isEmpty()) {
+            throw new ItemNotFoundException("Product with id " + id + " not found");
         }
     }
 }

@@ -6,6 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PaymentResponse {
-    private String orderId;
+    private int orderId;
     private boolean paid;
 }
