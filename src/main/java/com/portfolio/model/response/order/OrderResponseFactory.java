@@ -1,34 +1,31 @@
 package com.portfolio.model.response.order;
 
-import com.portfolio.model.response.product.ProductResponse;
-import com.portfolio.model.response.product.ProductResponseFactory;
 import com.portfolio.entity.order.Order;
 import com.portfolio.entity.product.Product;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import com.portfolio.enums.RequestType;
+import com.portfolio.model.response.ResponseFactory;
+import com.portfolio.model.response.ResponseFactoryProvider;
+import com.portfolio.model.response.product.ProductResponse;
 
 import java.util.HashSet;
 import java.util.Set;
 
-@Component
-public class OrderResponseFactory {
+public class OrderResponseFactory implements ResponseFactory<Order, OrderResponse> {
 
+    private ResponseFactory<Product, ProductResponse> productResponseFactory;
 
-    private ProductResponseFactory productResponseFactory;
-
-
-    @Autowired
-    public OrderResponseFactory(ProductResponseFactory productResponseFactory) {
-        this.productResponseFactory = productResponseFactory;
+    public OrderResponseFactory(ResponseFactoryProvider responseFactoryProvider) {
+        this.productResponseFactory = responseFactoryProvider.getFactory(RequestType.PRODUCT);
     }
 
-    public OrderResponse createOrderResponse(Order order) {
-        OrderResponse orderResponse = new OrderResponse();
-        orderResponse.setOrderId(order.getId());
+    @Override
+    public OrderResponse createResponse(Order order) {
         Set<ProductResponse> productResponseList = createProductResponse(order.getProducts());
-        orderResponse.setProductResponses(productResponseList);
-        double amountTopPay = order.getTotal();
-        orderResponse.setTotalAmount(amountTopPay);
+        double amountToPay = order.getTotal();
+        OrderResponse orderResponse = OrderResponse.builder()
+                .id(order.getId())
+                .productResponses(productResponseList)
+                .totalAmount(amountToPay).build();
         return orderResponse;
     }
 
@@ -37,7 +34,7 @@ public class OrderResponseFactory {
         Set<ProductResponse> productResponseList = new HashSet<>();
         ProductResponse productResponse;
         for (Product product : productList) {
-            productResponse = productResponseFactory.createProductResponse(product);
+            productResponse = productResponseFactory.createResponse(product);
             productResponse.setStock(1);
             productResponseList.add(productResponse);
         }

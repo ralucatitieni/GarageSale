@@ -6,7 +6,6 @@ import com.portfolio.entity.product.Product;
 import com.portfolio.enums.Currency;
 import com.portfolio.repository.CustomerRepository;
 import com.portfolio.repository.ProductRepository;
-import com.portfolio.repository.StockRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,28 +17,26 @@ public class OrderMapper {
 
     private static final double CURRENCY_CONVERTER_EUR = 5;
     private static final double CURRENCY_CONVERTER_USD = 4.5;
-    private StockRepository stockRepository;
     private ProductRepository productRepository;
     private CustomerRepository customerRepository;
 
     @Autowired
-    public OrderMapper(StockRepository stockRepository, ProductRepository productRepository,
-                       CustomerRepository customerRepository) {
-        this.stockRepository = stockRepository;
+    public OrderMapper(ProductRepository productRepository, CustomerRepository customerRepository) {
         this.productRepository = productRepository;
         this.customerRepository = customerRepository;
     }
 
-    public Order createOrder(OrderRequest orderRequest) {
-        Order order = new Order();
+    public Order mapToOrder(OrderRequest orderRequest) {
+
         Customer customer = createCustomer(orderRequest.getCustomerDetailsRequest());
-        order.setCustomer(customer);
         Set<Product> productsInCart = createProductListInCart(orderRequest.getProductIds());
-        order.setProducts(productsInCart);
-        order.setTotal(getTotalAmountInRON(productsInCart));
+        Order order = new Order.Builder()
+                .total(getTotalAmountInRON(productsInCart))
+                .products(productsInCart)
+                .customer(customer)
+                .build();
         return order;
     }
-
 
     private Set<Product> createProductListInCart(Set<Integer> ids) {
         Set<Product> itemsInCart = new HashSet<>();

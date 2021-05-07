@@ -1,19 +1,19 @@
 package com.portfolio.model.response.product;
 
 import com.portfolio.model.purchase.Price;
-import lombok.Builder;
+import com.portfolio.model.response.Response;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 import java.util.Map;
 
 @Getter
 @Setter
-@Builder
-public class ProductResponse {
+@SuperBuilder
+public class ProductResponse extends Response {
 
-    public int productId;
     public String category;
     public Price price;
     public List<String> issues;

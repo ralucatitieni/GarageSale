@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 
 @RestController
@@ -24,11 +25,11 @@ public class ProductController {
     }
 
     @GetMapping("/products")
-    public ResponseEntity<Object> getProducts() {
+    public ResponseEntity<List<ProductResponse>> getProducts() {
         return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
     }
 
-    @GetMapping("/products")
+    @GetMapping("/products/")
     public ResponseEntity<ProductResponse> getProduct(@RequestParam Integer id) {
         return new ResponseEntity<>(productService.getProduct(id), HttpStatus.OK);
     }
@@ -39,7 +40,6 @@ public class ProductController {
         return new ResponseEntity<>(productResponse, HttpStatus.CREATED);
     }
 
-    // TODO: 5/7/2021 change to PUT
     @PostMapping("/products/stock")
     public ResponseEntity<ProductResponse> updateStock(@RequestParam Integer id, @Valid @RequestBody StockRequest stockRequest) {
         return new ResponseEntity<>(productService.updateStock(id, stockRequest), HttpStatus.OK);

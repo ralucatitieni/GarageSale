@@ -4,19 +4,19 @@ import com.portfolio.entity.product.Product;
 import com.portfolio.entity.product.ProductDetail;
 import com.portfolio.enums.Currency;
 import com.portfolio.model.purchase.Price;
-import org.springframework.stereotype.Component;
+import com.portfolio.model.response.ResponseFactory;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-@Component
-public class ProductResponseFactory {
+public class ProductResponseFactory implements ResponseFactory<Product, ProductResponse> {
 
-    public ProductResponse createProductResponse(Product product) {
+    @Override
+    public ProductResponse createResponse(Product product) {
         ProductResponse productResponse = ProductResponse.builder()
-                .productId(product.getId())
+                .id(product.getId())
                 .category(product.getCategory())
                 .price(new Price(Currency.valueOf(product.getCurrency()), product.getAmount()))
                 .issues(createIssues(product))

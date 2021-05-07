@@ -2,17 +2,23 @@ package com.portfolio.validator;
 
 import com.portfolio.exception.InvalidCardException;
 import com.portfolio.model.purchase.Card;
-import org.springframework.stereotype.Component;
 
 import java.time.YearMonth;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Component
 public class CardValidator {
 
     private static final String cardNumberPattern = "^(?:\\d{16})$";
     private static final String cardCVVPatter = "^(?:\\d{3})$";
+    private static final CardValidator instance = new CardValidator();
+
+    private CardValidator() {
+    }
+
+    public static CardValidator getInstance() {
+        return instance;
+    }
 
     public void validateCard(Card card) throws InvalidCardException {
 

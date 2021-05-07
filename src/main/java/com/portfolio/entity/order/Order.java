@@ -2,18 +2,18 @@ package com.portfolio.entity.order;
 
 import com.portfolio.entity.product.Product;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
 @Getter
-@Setter
 @Entity(name = "order")
 @Table(name = "orders")
+@NoArgsConstructor
 public class Order implements Serializable {
 
     @Id
@@ -21,7 +21,7 @@ public class Order implements Serializable {
     private Integer id;
     private boolean paid;
     private double total;
-    private LocalDateTime orderDate;
+    private LocalDate orderDate;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "order_product", joinColumns = @JoinColumn(name = "order_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
@@ -31,7 +31,47 @@ public class Order implements Serializable {
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    public Order() {
-        this.orderDate = LocalDateTime.now();
+    private Order(Builder builder) {
+        this.total = builder.total;
+        this.products = builder.products;
+        this.customer = builder.customer;
+        this.orderDate = builder.orderDate;
     }
+
+    public void setPaid(boolean paid) {
+        this.paid = paid;
+    }
+
+    public static class Builder {
+
+        private double total;
+        private LocalDate orderDate;
+        private Set<Product> products;
+        private Customer customer;
+
+        public Builder() {
+            this.orderDate = LocalDate.now();
+        }
+
+        public Builder total(double total) {
+            this.total = total;
+            return this;
+        }
+
+        public Builder products(Set<Product> products) {
+            this.products = products;
+            return this;
+        }
+
+        public Builder customer(Customer customer) {
+            this.customer = customer;
+            return this;
+        }
+
+        public Order build() {
+            return new Order(this);
+        }
+    }
+
+
 }
