@@ -42,6 +42,10 @@ public class Order implements Serializable {
         this.paid = paid;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public static class Builder {
 
         private double total;
