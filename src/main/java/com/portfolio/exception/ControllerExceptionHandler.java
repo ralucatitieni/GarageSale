@@ -14,7 +14,7 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorMessage> handleException(MethodArgumentNotValidException exception) {
         ErrorMessage errorMessage = new ErrorMessage(HttpStatus.BAD_REQUEST, exception.getMessage());
-        return new ResponseEntity(errorMessage, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(errorMessage, errorMessage.getStatus());
     }
 
     @ExceptionHandler(InvalidRequestException.class)
@@ -31,12 +31,12 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(ItemNotFoundException.class)
     public ResponseEntity<ErrorMessage> handleException(ItemNotFoundException exception) {
         ErrorMessage errorMessage = new ErrorMessage(HttpStatus.NOT_FOUND, exception.getMessage());
-        return new ResponseEntity(errorMessage, HttpStatus.NOT_FOUND);
+        return new ResponseEntity(errorMessage, errorMessage.getStatus());
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorMessage> handleException(Exception exception) {
         ErrorMessage errorMessage = new ErrorMessage(HttpStatus.SERVICE_UNAVAILABLE, "Unexpected server error");
-        return new ResponseEntity(errorMessage, HttpStatus.SERVICE_UNAVAILABLE);
+        return new ResponseEntity(errorMessage, errorMessage.getStatus());
     }
 }
