@@ -1,0 +1,56 @@
+{
+    "category": "LAPTOP",
+    "currency": "USD",
+    "amount": 600.0,
+    "issues": ["something", "bla bla"],
+    "stock": 3,
+    "laptopRequest": {
+        "brand": "dvdvv",
+        "model": "Dell2",
+        "memorySize": 16,
+         "operatingSystem": "LINUX",
+        "diagonalDisplay": 20
+    }
+}
+
+
+{
+    "category": "PHONE",
+    "currency": "USD",
+    "amount": 600.0,
+     "issues": ["something", "bla bla"],
+    "stock": 3,
+    "phoneRequest": {
+       "memorySize": 8,
+        "dualSim": true,
+        "model": "RALUCAAAA",
+        "brand": "SAMSUNG",
+        "operatingSystem": "ANDROID"
+    }
+}
+
+
+{
+    "category": "HEADPHONE",
+    "currency": "USD",
+    "amount": 600.0,
+     "issues": ["something", "bla bla"],
+    "stock": 3,
+    "headphoneRequest": {
+        "brand": "RALUCAAAA",
+        "type": "in-ear"
+    }
+}
+
+
+{
+    "category": "KEYBOARD",
+    "currency": "USD",
+    "amount": 600.0,
+     "issues": ["something", "bla bla"],
+    "stock": 3,
+    "keyboardRequest": {
+        "brand": "RALUCAAAA",
+        "type": "wireless"
+    }
+}
